@@ -1,20 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleFormSubmission = handleFormSubmission;
+exports.handleFormSubmission = void 0;
 const formValidator_1 = require("../validation/formValidator");
 const mailer_1 = require("../mailer");
-async function handleFormSubmission(req, res) {
-    console.log(req.body);
+const handleFormSubmission = async (req, res) => {
     const { website } = req.body;
     if (website && website.trim() !== "") {
-        return res.status(400).json({ error: 'Bot detected.' });
+        res.status(400).json({ error: 'Bot detected.' });
+        return;
     }
     const parseResult = formValidator_1.formSchema.safeParse(req.body);
     if (!parseResult.success) {
-        return res.status(400).json({
+        res.status(400).json({
             error: 'Invalid request data',
             details: parseResult.error.errors,
         });
+        return;
     }
     const { name, email, message, data } = parseResult.data;
     try {
@@ -24,10 +25,11 @@ async function handleFormSubmission(req, res) {
             message: message || '',
             additionalData: data,
         });
-        return res.status(200).json({ success: true, message: "Form submitted" });
+        res.status(200).json({ success: true, message: "Form submitted" });
     }
     catch (error) {
         console.error("Email error:", error);
-        return res.status(500).json({ error: "Failed to send email" });
+        res.status(500).json({ error: "Failed to send email" });
     }
-}
+};
+exports.handleFormSubmission = handleFormSubmission;

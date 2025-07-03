@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc"
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "prebuild": "npm run clean",
+    "release": "npm run build"
   },
   "keywords": [],
   "author": "Andrej Focic",

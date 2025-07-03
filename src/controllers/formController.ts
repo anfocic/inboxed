@@ -1,20 +1,21 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { formSchema } from '../validation/formValidator';
 import { sendFormEmail } from '../mailer';
 
-export async function handleFormSubmission(req: Request, res: Response) {
-    console.log(req.body);
+export const handleFormSubmission: RequestHandler = async (req, res) => {
     const { website } = req.body;
     if (website && website.trim() !== "") {
-        return res.status(400).json({ error: 'Bot detected.' });
+        res.status(400).json({ error: 'Bot detected.' });
+        return;
     }
 
     const parseResult = formSchema.safeParse(req.body);
     if (!parseResult.success) {
-        return res.status(400).json({
+        res.status(400).json({
             error: 'Invalid request data',
             details: parseResult.error.errors,
         });
+        return;
     }
 
     const { name, email, message, data } = parseResult.data;
@@ -26,9 +27,9 @@ export async function handleFormSubmission(req: Request, res: Response) {
             message: message || '',
             additionalData: data,
         });
-        return res.status(200).json({ success: true, message: "Form submitted" });
+        res.status(200).json({ success: true, message: "Form submitted" });
     } catch (error) {
         console.error("Email error:", error);
-        return res.status(500).json({ error: "Failed to send email" });
+        res.status(500).json({ error: "Failed to send email" });
     }
-}
+};

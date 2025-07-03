@@ -6,6 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const formController_1 = require("../controllers/formController");
 const router = express_1.default.Router();
-// @ts-ignore
 router.post('/submit', formController_1.handleFormSubmission);
 exports.default = router;
