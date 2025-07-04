@@ -6,10 +6,23 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
     "clean": "rm -rf dist",
     "build": "tsc",
     "prebuild": "npm run clean",
-    "release": "npm run build"
+    "build:prod": "NODE_ENV=production npm run build",
+    "release": "npm run build:prod",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --watchAll=false",
+    "lint": "echo 'Linting not configured yet'",
+    "docker:build": "docker build -t inboxed .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env inboxed",
+    "docker:compose": "docker-compose up -d",
+    "docker:compose:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
+    "logs": "docker-compose logs -f",
+    "health": "curl -f http://localhost:3000/health || exit 1"
   },
   "keywords": [],
   "author": "Andrej Focic",
@@ -18,8 +31,16 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.0.10",
     "@types/nodemailer": "^6.4.17",
+    "@types/sanitize-html": "^2.16.0",
+    "@types/supertest": "^6.0.3",
+    "@types/winston": "^2.4.4",
+    "jest": "^29.7.0",
+    "supertest": "^7.1.1",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
@@ -28,7 +49,11 @@
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.1",
+    "multer": "^2.0.1",
     "nodemailer": "^7.0.4",
+    "sanitize-filename": "^1.6.3",
+    "sanitize-html": "^2.17.0",
+    "winston": "^3.17.0",
     "zod": "^3.25.71"
   }
 }

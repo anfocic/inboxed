@@ -8,3 +8,4 @@ export const formSchema = z.object({
     message: z.string().max(1000).optional(),
     data: z.record(z.any()),
 });
+
