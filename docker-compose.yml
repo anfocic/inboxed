@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   inboxed:
     build: .
@@ -16,7 +14,7 @@ services:
       - SMTP_PASS=${SMTP_PASS}
       - TO_EMAIL=${TO_EMAIL}
     env_file:
-      - .env
+      - .env.production
     volumes:
       # Mount logs directory for persistent logging
       - ./logs:/app/logs
